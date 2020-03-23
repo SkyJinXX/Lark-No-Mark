@@ -2,7 +2,7 @@ const { exec } = require("child_process");
 const removeMark = require('./removeMark.js')
 const port = 799
 
-exec("C:\\Users\\47186\\AppData\\Local\\Lark\\Lark.exe --remote-debugging-port=" + port, (error, stdout, stderr) => {
+exec(process.env['USERPROFILE'] + "\\AppData\\Local\\Lark\\Lark.exe --remote-debugging-port=" + port, (error, stdout, stderr) => {
     if (error) {
         console.log(`error: ${error.message}`);
         return;
