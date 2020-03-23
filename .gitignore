@@ -1,0 +1,10 @@
+/.cache
+/.idea
+/node_modules
+/build
+/dist
+.DS_Store
+*.log
+test/e2e/reports/
+test/unit/coverage/
+package-lock.json
