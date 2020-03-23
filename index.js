@@ -1,42 +1,26 @@
-const CDP = require('chrome-remote-interface');
+const { exec } = require("child_process");
+const removeMark = require('./removeMark.js')
+const port = 799
 
-const JAVA_SCRIPT = `{
-    document.querySelector('.lark-water-mark-main').remove()
-    document.querySelector('.lark-water-mark').remove()
-}`;
-
-async function init () {
-    const targetList = await CDP.List({port: 788})
-    for (target of targetList) {
-        excuteTarget(target)
+exec("C:\\Users\\47186\\AppData\\Local\\Lark\\Lark.exe --remote-debugging-port=" + port, (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
     }
-}
-async function excuteTarget(target) {
-    let client
-    try {
-        client = await CDP({port: 788, target})
-    
-        // console.log(target)
-        const {CSS, DOM, Page, Runtime} = client;
-        await DOM.enable();
-        await CSS.enable();
-        await Page.enable();
-
-        // await Runtime.evaluate({
-        //     expression: JAVA_SCRIPT
-        // });
-        const {styleSheetId} = await CSS.createStyleSheet({frameId: target.id});
-        await CSS.setStyleSheetText({
-            styleSheetId,
-            text: `.lark-water-mark-main { display: none !important; } .lark-water-mark { display: none !important; }`
-        });
-    } catch (error) {
-        console.error(error);
-    } finally {
-        if (client) {
-            await client.close();
-        }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
     }
-}
+    console.log(`stdout: ${stdout}`);
+});
 
-init()
+
+setTimeout(() => {
+    removeMark(port)
+}, 3000);
+setTimeout(() => {
+    removeMark(port)
+}, 6000);
+setTimeout(() => {
+    removeMark(port)
+}, 9000);
